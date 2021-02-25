@@ -44,6 +44,11 @@ func main() {
 	data := make(map[string]string)
 
 	if *fn != "" {
+		existed := true
+		if _, err := os.Stat(*fn); os.IsNotExist(err) {
+			existed = false
+		}
+
 		file, err = os.OpenFile(*fn, os.O_CREATE|os.O_RDWR, 0666)
 		if err != nil {
 			log.Printf("Error opening data file for reading: %v", err)
@@ -51,10 +56,12 @@ func main() {
 		}
 		defer file.Close()
 
-		err = json.NewDecoder(file).Decode(&data)
-		if err != nil {
-			log.Printf("Error reading data file: %v", err)
-			log.Fatal("To continue without a data file, omit the option and run again.")
+		if existed {
+			err = json.NewDecoder(file).Decode(&data)
+			if err != nil {
+				log.Printf("Error reading data file: %v", err)
+				log.Fatal("To continue without a data file, omit the option and run again.")
+			}
 		}
 	}
 
@@ -100,6 +107,7 @@ func main() {
 	}
 
 	file.Truncate(0)
+	file.Seek(0, 0)
 	file.Write(bx)
 	// defer file.Close()
 }
