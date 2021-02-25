@@ -1,0 +1,4 @@
+rss2discord
+*.json
+.DS_Store
+._*
