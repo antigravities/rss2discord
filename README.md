@@ -2,7 +2,7 @@
 Post RSS feeds to Discord.
 
 ## Install
-I wrote this using Go 1.16. It might work on older versions, but I'm not sure.
+rss2discord *requires* Go 1.16+.
 
 ```
 go get get.cutie.cafe/rss2discord
